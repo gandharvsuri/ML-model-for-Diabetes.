@@ -21,4 +21,23 @@ data = pd.read_csv("Pima_Indian_diabetes.csv")
 # 19 print(data.Age.isnull().sum())
 # 0 print(data.Outcome.isnull().sum())
 
-print(data.BMI.value_counts())
+
+data.Pregnancies= data.Pregnancies.reset_index()
+Preganancies_mean = data.Pregnancies.mean()
+
+Glucose_mean=data.Glucose.mean()
+
+data.SkinThickness = data.SkinThickness.reset_index()
+SkinThickness_mean = data.SkinThickness.mean()
+
+data.BMI= data.BMI.reset_index()
+BMI_mean = data.BMI.mean(skipna= True)
+
+Age_mean = data.Age.mean()
+
+data.Pregnancies.fillna(value = Preganancies_mean, inplace = True)
+data.Glucose.fillna(value = Glucose_mean, inplace = True)
+data.SkinThickness.fillna(value = SkinThickness_mean, inplace = True)
+data.BMI.fillna(value = BMI_mean, inplace = True)
+data.Age.fillna(value = Age_mean, inplace = True)
+
