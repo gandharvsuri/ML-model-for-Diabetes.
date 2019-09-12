@@ -32,7 +32,7 @@ data.SkinThickness = data.SkinThickness.reset_index()
 SkinThickness_mean = data.SkinThickness.mean()
 
 data.BMI= data.BMI.reset_index()
-BMI_mean = data.BMI.mean(skipna= True)
+BMI_mean = data.BMI.mean(skipna= True) 
 
 Age_mean = data.Age.mean()
 
@@ -41,4 +41,5 @@ data.Glucose.fillna(value = Glucose_mean, inplace = True)
 data.SkinThickness.fillna(value = SkinThickness_mean, inplace = True)
 data.BMI.fillna(value = BMI_mean, inplace = True)
 data.Age.fillna(value = Age_mean, inplace = True)
+
 
