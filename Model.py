@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import sklearn
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 # from sklearn.cross_validation import train_test_split
 from sklearn.preprocessing import StandardScaler
