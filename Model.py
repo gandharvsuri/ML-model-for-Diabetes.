@@ -23,6 +23,11 @@ data = pd.read_csv("Pima_Indian_diabetes.csv")
 # 0 print(data.Outcome.isnull().sum())
 
 
+data1= data
+data.fillna(0,inplace=True)
+
+print(data1.describe(include='all'))
+
 data.Pregnancies= data.Pregnancies.reset_index()
 Preganancies_mean = data.Pregnancies.mean()
 
@@ -41,4 +46,5 @@ data.Glucose.fillna(value = Glucose_mean, inplace = True)
 data.SkinThickness.fillna(value = SkinThickness_mean, inplace = True)
 data.BMI.fillna(value = BMI_mean, inplace = True)
 data.Age.fillna(value = Age_mean, inplace = True)
+
 
