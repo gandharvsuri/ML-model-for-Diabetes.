@@ -1,0 +1,8 @@
+[] Missing data : 0 or mean reasons
+[] Data preprocessing :
+    [] Scaling
+[] Data Analysis
+[] Feature Extraction
+[] Model building - logistic regression
+[] Comments
+[] Documentation

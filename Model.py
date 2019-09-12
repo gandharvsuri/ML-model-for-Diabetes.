@@ -37,7 +37,7 @@ data.SkinThickness = data.SkinThickness.reset_index()
 SkinThickness_mean = data.SkinThickness.mean()
 
 data.BMI= data.BMI.reset_index()
-BMI_mean = data.BMI.mean(skipna= True)
+BMI_mean = data.BMI.mean(skipna= True) 
 
 Age_mean = data.Age.mean()
 
