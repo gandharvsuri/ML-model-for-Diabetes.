@@ -1,19 +1,18 @@
 import numpy as np
 import pandas as pd
 import sklearn
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-# from sklearn.cross_validation import train_test_split
-from sklearn.preprocessing import StandardScaler
+
 from sklearn.model_selection import train_test_split
-from sklearn.utils import shuffle
-
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report
 #Load data
-data = pd.read_csv("Pima_Indian_diabetes.csv")
+data = pd.read_csv('Pima_Indian_diabetes.csv')
 
-print(data.info())
 
 #Adding patient Id for patient identification
 data["Patient_ID"] = data.index + 1
+
+
 
 
 #CHECK FOR MISSING DATA
@@ -64,7 +63,8 @@ def Fill_Null_Values(col):
     mean_0 = data[data['Outcome'] == 0][col].mean()
 
 
-
+print(data.Pregnancies.tail(50))
+'''
 
 datax= data[data['Outcome'] == 1]
 print(data.describe())
@@ -101,3 +101,19 @@ data.Age.fillna(value = Age_mean, inplace = True)
 
 
 print(data)
+
+'''
+
+X = data[['Pregnancies','Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']]
+Y= data['Outcome']
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=101)
+
+logmodel = LogisticRegression()
+
+# Fit the model using the training data
+# X_train -> parameter supplies the data features
+# y_train -> parameter supplies the target labels
+logmodel.fit(X_train, Y_train)
+
+print(classification_report(Y_test, predictions))
