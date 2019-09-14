@@ -5,6 +5,8 @@ import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+
+
 #Load data
 data = pd.read_csv('Pima_Indian_diabetes.csv')
 
@@ -55,6 +57,10 @@ if outcome = 0  replace with mean_0
 
 '''
 
+data['Pregnancies'] = pd.to_numeric(data['Pregnancies'], errors = 'coerce')
+data['BloodPressure'] = pd.to_numeric(data['BloodPressure'], errors = 'coerce')
+data['SkinThickness'] = pd.to_numeric(data['SkinThickness'], errors = 'coerce')
+data['BMI'] = pd.to_numeric(data['BMI'], errors = 'coerce')
 
 def Fill_Null_Values(col):
 
@@ -63,14 +69,12 @@ def Fill_Null_Values(col):
     mean_0 = data[data['Outcome'] == 0][col].mean()
 
 
-print(data.Pregnancies.tail(50))
+
 '''
 
 datax= data[data['Outcome'] == 1]
-print(data.describe())
 #print(data[data['Outcome'] == 0]['Glucose'])
 
-print(data)
 
 
 Fill_Null_Values('Glucose')
@@ -99,21 +103,23 @@ data.BMI.fillna(value = BMI_mean, inplace = True)
 Age_mean = data.Age.mean()
 data.Age.fillna(value = Age_mean, inplace = True)
 
-
-print(data)
-
 '''
+
+data.fillna(0, inplace=True)
 
 X = data[['Pregnancies','Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']]
 Y= data['Outcome']
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=101)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3)
 
 logmodel = LogisticRegression()
 
 # Fit the model using the training data
 # X_train -> parameter supplies the data features
 # y_train -> parameter supplies the target labels
+
 logmodel.fit(X_train, Y_train)
+
+predictions = logmodel.predict(X_test)
 
 print(classification_report(Y_test, predictions))
