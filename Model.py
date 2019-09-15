@@ -57,27 +57,12 @@ if outcome = 0  replace with mean_0
 
 '''
 
+
 data['Pregnancies'] = pd.to_numeric(data['Pregnancies'], errors = 'coerce')
 data['BloodPressure'] = pd.to_numeric(data['BloodPressure'], errors = 'coerce')
 data['SkinThickness'] = pd.to_numeric(data['SkinThickness'], errors = 'coerce')
 data['BMI'] = pd.to_numeric(data['BMI'], errors = 'coerce')
 
-def Fill_Null_Values(col):
-
-    null_list = data[data[col].isnull()].index.tolist()
-    mean_1 = data[data['Outcome'] == 1][col].mean()
-    mean_0 = data[data['Outcome'] == 0][col].mean()
-
-
-
-'''
-
-datax= data[data['Outcome'] == 1]
-#print(data[data['Outcome'] == 0]['Glucose'])
-
-
-
-Fill_Null_Values('Glucose')
 data.Pregnancies.fillna(value=0 ,inplace= True)
 
 mean_1 = data[data.Outcome == 1].Glucose.mean()
@@ -86,24 +71,14 @@ print(mean_1)
 mean_0 = data[data.Outcome == 0].Glucose.mean()
 print(mean_0)
 
-data[data.Outcome == 1].Glucose.fillna(value = mean_1, inplace = True)
-data[data.Outcome == 0].Glucose.fillna(value = mean_0, inplace = True)
-#data[data.Outcome == 1].Glucose.fillna(value =mean_1 , inplace= True)
-#data[data.Outcome == 0].Glucose.fillna(value = mean_0, inplace= True)
 
+data['Glucose'] = data.apply(lambda x: mean_0 if np.isnan(x['Glucose']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['Glucose']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
+data['SkinThickness'] = data.apply(lambda x: mean_0 if np.isnan(x['SkinThickness']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['SkinThickness']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
+data['BMI'] = data.apply(lambda x: mean_0 if np.isnan(x['BMI']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['BMI']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
+data['Age'] = data.apply(lambda x: mean_0 if np.isnan(x['Age']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['Age']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
 
-data.SkinThickness = data.SkinThickness.reset_index()
-SkinThickness_mean = data.SkinThickness.mean()
-data.SkinThickness.fillna(value = SkinThickness_mean, inplace = True)
+data.reset_index()
 
-data.BMI= data.BMI.reset_index()
-BMI_mean = data.BMI.mean(skipna= True) 
-data.BMI.fillna(value = BMI_mean, inplace = True)
-
-Age_mean = data.Age.mean()
-data.Age.fillna(value = Age_mean, inplace = True)
-
-'''
 
 data.fillna(0, inplace=True)
 
@@ -117,9 +92,9 @@ logmodel = LogisticRegression()
 # Fit the model using the training data
 # X_train -> parameter supplies the data features
 # y_train -> parameter supplies the target labels
-
 logmodel.fit(X_train, Y_train)
 
 predictions = logmodel.predict(X_test)
+
 
 print(classification_report(Y_test, predictions))
