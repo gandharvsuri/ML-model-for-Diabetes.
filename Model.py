@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import sklearn
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
@@ -60,37 +61,66 @@ data['BMI'] = pd.to_numeric(data['BMI'], errors = 'coerce')
 
 data.Pregnancies.fillna(value=0 ,inplace= True)
 
-mean_1 = data[data.Outcome == 1].Glucose.mean()
-print(mean_1)
 
-mean_0 = data[data.Outcome == 0].Glucose.mean()
-print(mean_0)
+Glucose_mean_1 = data[data.Outcome == 1].Glucose.mean()
+Glucose_mean_0 = data[data.Outcome == 0].Glucose.mean()
+
+BMI_mean_1 = data[data.Outcome == 1].BMI.mean()
+BMI_mean_0 = data[data.Outcome == 0].BMI.mean()
+
+SkinThickness_mean_1 = data[data.Outcome == 1].SkinThickness.mean()
+SkinThickness_mean_0 = data[data.Outcome == 0].SkinThickness.mean()
+
+Age_mean_1 = data[data.Outcome == 1].Age.mean()
+Age_mean_0 = data[data.Outcome == 0].Age.mean()
+
+BloodPressure_mean_1 = data[data.Outcome == 1].BloodPressure.mean()
+BloodPressure_mean_0 = data[data.Outcome == 0].BloodPressure.mean()
 
 
-data['Glucose'] = data.apply(lambda x: mean_0 if np.isnan(x['Glucose']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['Glucose']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
-data['SkinThickness'] = data.apply(lambda x: mean_0 if np.isnan(x['SkinThickness']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['SkinThickness']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
-data['BMI'] = data.apply(lambda x: mean_0 if np.isnan(x['BMI']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['BMI']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
-data['Age'] = data.apply(lambda x: mean_0 if np.isnan(x['Age']) and x['Outcome'] == 0 else mean_1 if np.isnan(x['Age']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
+data['Glucose'] = data.apply(lambda x: Glucose_mean_0 if np.isnan(x['Glucose']) and x['Outcome'] == 0 else Glucose_mean_1 if np.isnan(x['Glucose']) and x['Outcome'] == 1 else x['Glucose'], axis = 1)
+data['SkinThickness'] = data.apply(lambda x: SkinThickness_mean_0 if np.isnan(x['SkinThickness']) and x['Outcome'] == 0 else SkinThickness_mean_1 if np.isnan(x['SkinThickness']) and x['Outcome'] == 1 else x['SkinThickness'], axis = 1)
+data['BMI'] = data.apply(lambda x: BMI_mean_0 if np.isnan(x['BMI']) and x['Outcome'] == 0 else BMI_mean_1 if np.isnan(x['BMI']) and x['Outcome'] == 1 else x['BMI'], axis = 1)
+data['Age'] = data.apply(lambda x: Age_mean_0 if np.isnan(x['Age']) and x['Outcome'] == 0 else Age_mean_1 if np.isnan(x['Age']) and x['Outcome'] == 1 else x['Age'], axis = 1)
+data['BloodPressure'] = data.apply(lambda x: BloodPressure_mean_0 if np.isnan(x['BloodPressure']) and x['Outcome'] == 0 else BloodPressure_mean_1 if np.isnan(x['BloodPressure']) and x['Outcome'] == 1 else x['Age'], axis = 1)
+
 
 data.reset_index()
 
+print(Glucose_mean_0)
+print(BMI_mean_0)
 
-data.fillna(0, inplace=True)
+print(data)
 
 X = data[['Pregnancies','Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']]
 Y= data['Outcome']
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3)
+'''
+Diabetic = data.loc[Y == 1]
+Non_Diabetic = data.loc[Y == 0]
 
-# logmodel = LogisticRegression()
-logmodel = LogisticRegression(solver='liblinear')
+plt.scatter(Diabetic.iloc[:, 0], Diabetic.iloc[:, 1], s=10, label='Diabetic')
+plt.scatter(Non_Diabetic.iloc[:, 0], Non_Diabetic.iloc[:, 1], s=10, label='Non_Diabetic')
+plt.legend()
+plt.show()
+'''
 
-# Fit the model using the training data
-# X_train -> parameter supplies the data features
-# y_train -> parameter supplies the target labels
-logmodel.fit(X_train, Y_train)
+Accuracy = []
 
-predictions = logmodel.predict(X_test)
+for i in range(1000):
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3)
+    # logmodel = LogisticRegression()
+    logmodel = LogisticRegression(solver='liblinear')
+    # Fit the model using the training data
+    # X_train -> parameter supplies the data features
+    # y_train -> parameter supplies the target labels
+    logmodel.fit(X_train, Y_train)
+    predictions = logmodel.predict(X_test)
 
+    score = logmodel.score(X_test, Y_test)
+    Accuracy.append(score)
 
-print(classification_report(Y_test, predictions))
+print(max(Accuracy))
+print(min(Accuracy))
+print(sum(Accuracy)/len(Accuracy))    
+
