@@ -61,6 +61,10 @@ The histograms shown are in the following order : Pregnancies, Glucose, BloodPre
 - Since the target outcome can only have either 0 or 1 as its value, we apply logical regression over the feature vector for a 100 different shuffles of the data.
 - We then fit our training data on the logmodel and use the predict function in scikit-learn to predict the outcome on the test data.
 - We also use the accuracy measuring tools of scikit-learn to measure the accuracy of our model.
+- Running instructions :
+```
+python3 Model.py
+```
 - The final accuracy comes out to be : 
     - Maximum accuracy : 84.84%
     - Mean accuracy : 76.32% 
