@@ -1,21 +1,16 @@
+# Required library imports
 import numpy as np
 import pandas as pd
 import sklearn
-
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
-
-#Load data
+# Load data
 data = pd.read_csv('Pima_Indian_diabetes.csv')
 
-
-#Adding patient Id for patient identification
+# Adding patient Id for patient identification
 data["Patient_ID"] = data.index + 1
-
-
-
 
 #CHECK FOR MISSING DATA
 #Checking number of NULL Values in each column
@@ -87,7 +82,8 @@ Y= data['Outcome']
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3)
 
-logmodel = LogisticRegression()
+# logmodel = LogisticRegression()
+logmodel = LogisticRegression(solver='liblinear')
 
 # Fit the model using the training data
 # X_train -> parameter supplies the data features
